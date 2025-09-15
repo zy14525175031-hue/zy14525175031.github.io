@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品防伪查询系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50, #3498db);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .verification-result {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-icon {
+            font-size: 60px;
+            color: #27ae60;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .result-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .result-desc {
+            color: #7f8c8d;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .product-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eaeaea;
+            transition: background-color 0.2s;
+        }
+        
+        .info-item:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        .query-time {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .security-tips {
+            background: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 25px;
+        }
+        
+        .security-tips h3 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .security-tips h3 i {
+            margin-right: 8px;
+        }
+        
+        .security-tips p {
+            color: #34495e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            border-top: 1px solid #eaeaea;
+            background: #f8f9fa;
+        }
+        
+        .company-logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .authentic-stamp {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #27ae60;
+            border-radius: 50%;
+            color: #27ae60;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            transform: rotate(-15deg);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+        
+        .verification-code {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .code-value {
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            background: #2c3e50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> 产品防伪查询系统</h1>
+            <p>扫描二维码验证产品真伪</p>
+        </div>
+        
+        <div class="content">
+            <div class="verification-result">
+                <div class="authentic-stamp">
+                    <div>正品认证</div>
+                </div>
+                <div class="result-title">您查询的是正牌产品</div>
+                <p class="result-desc">该产品由新疆乡田有限公司联名新疆中驻生物科技有限公司出品，请放心使用！</p>
+            </div>
+                        
+            <div class="product-info">
+                <div class="info-item">
+                    <span class="info-label">生产企业名称：</span>
+                    <span class="info-value">新疆中驼生物科技有限公司</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">产品名称：</span>
+                    <span class="info-value">醇恩有机纯驼乳粉</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">查询次数：</span>
+                    <span class="info-value">首次查询</span>
+                </div>
+            </div>
+            
+            <div class="query-time">
+                <i class="far fa-clock"></i> 查询时间: <span id="current-time">2025年09月14日 13:18:21</span>
+            </div>
+            
+            <div class="security-tips">
+                <h3><i class="fas fa-info-circle"></i> 安全提示</h3>
+                <p>请确认这是您首次查询该产品防伪码。如该码已被多次查询，可能为假冒产品。如有疑问，请拨打官方客服热线 400-123-4567 进行咨询。</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="company-logo">醇恩 ®</div>
+            <p>版权所有 © 2025 新疆乡田公司 | 防伪查询系统</p>
+        </div>
+    </div>
+
+    <script>
+        // 更新当前时间
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('current-time').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 页面加载时更新时间
+        updateCurrentTime();
+        
+        // 每秒更新时间
+        setInterval(updateCurrentTime, 1000);
+        
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoItems = document.querySelectorAll('.info-item');
+            infoItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.backgroundColor = '#f0f7ff';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                    }, 300);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
