@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>产品防伪查询系统</title>
+    <title>醇恩有机纯驼乳粉 - 防伪查询系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔒</text></svg>">
     <style>
         * {
             margin: 0;
@@ -207,20 +208,20 @@
             100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
         }
         
-        .verification-code {
+        .github-info {
             text-align: center;
-            margin: 15px 0;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
         }
         
-        .code-value {
-            font-family: monospace;
-            font-size: 18px;
-            letter-spacing: 2px;
-            background: #2c3e50;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            display: inline-block;
+        .github-info a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .github-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -271,6 +272,10 @@
         </div>
     </div>
 
+    <div class="github-info">
+        本页面托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> | 页面版本: 1.0
+    </div>
+
     <script>
         // 更新当前时间
         function updateCurrentTime() {
@@ -304,6 +309,15 @@
                     }, 300);
                 });
             });
+            
+            // 模拟从URL获取参数（在实际应用中，这里应该从URL解析参数）
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                // 如果有防伪码参数，可以在这里进行处理
+                console.log('防伪码:', code);
+            }
         });
     </script>
 </body>
